@@ -5,4 +5,4 @@ IT has the following functionalities .
 
 1) User Model for having a look at his cart .
 
-2) Search and find elemetns .
+2) Search and find elements .
