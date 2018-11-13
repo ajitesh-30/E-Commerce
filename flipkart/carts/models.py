@@ -2,7 +2,9 @@ from decimal import Decimal
 from django.conf import settings
 from django.db import models
 from django.db.models.signals import pre_save, post_save, m2m_changed
+
 from products.models import Product
+
 
 User = settings.AUTH_USER_MODEL
 
@@ -13,7 +15,7 @@ class CartManager(models.Manager):
         if qs.count() == 1:
             new_obj = False
             cart_obj = qs.first()
-            if request.user.is_authenticated==True and cart_obj.user is None:
+            if request.user.is_authenticated() and cart_obj.user is None:
                 cart_obj.user = request.user
                 cart_obj.save()
         else:
@@ -25,7 +27,7 @@ class CartManager(models.Manager):
     def new(self, user=None):
         user_obj = None
         if user is not None:
-            if user.is_authenticated==True:
+            if user.is_authenticated():
                 user_obj = user
         return self.model.objects.create(user=user_obj)
 
@@ -41,6 +43,16 @@ class Cart(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+    @property
+    def is_digital(self):
+        qs = self.products.all() #every product
+        new_qs = qs.filter(is_digital=False) # every product that is not digial
+        if new_qs.exists():
+            return False
+        return True
+
+
 
 
 def m2m_changed_cart_receiver(sender, instance, action, *args, **kwargs):
@@ -65,16 +77,3 @@ def pre_save_cart_receiver(sender, instance, *args, **kwargs):
         instance.total = 0.00
 
 pre_save.connect(pre_save_cart_receiver, sender=Cart)
-
-
-
-
-
-
-
-
-
-
-
-
-
