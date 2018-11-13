@@ -10,7 +10,7 @@
    <div class='container'>
   <a class="navbar-brand" href="{{ home_url }}">
     <img src="http://getbootstrap.com/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">
-    {% if brand_name %} {{brand_name }} {% else %}CFE eCommerce {% endif %}
+    {% if brand_name %} {{brand_name }} {% else %}ECOMMERCE {% endif %}
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -42,20 +42,8 @@
       </li>
       {% endif %}
       <li class="nav-item {% if request.path == cart_url %}active{% endif %}">
-        <a class="nav-link" href="{{ cart_url }}"> {{ request.session.cart_items }} <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+        <a class="nav-link" href="{{ cart_url }}"><span class='navbar-cart-count'>{{ request.session.cart_items }}</span> <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
       </li>
-
-       <!--  <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Dropdown link
-            </a>
-            <div class="dropdown-menu dropdown-menu-left" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-          </li> -->
-
     </ul>
     {% include 'search/snippets/search-form.html' %}
   </div>
