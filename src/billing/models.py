@@ -5,9 +5,6 @@ from django.db.models.signals import post_save
 from accounts.models import GuestEmail
 User = settings.AUTH_USER_MODEL
 
-# abc@teamcfe.com -->> 1000000 billing profiles
-# user abc@teamcfe.com -- 1 billing profile
-
 
 class BillingProfileManager(models.Manager):
     def new_or_get(self, request):

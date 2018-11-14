@@ -22,8 +22,7 @@ class CustomUser(AbstractBaseUser):
 	def get_full_name(self):
 		return
 
-class Profile(models.Model):
-	user = models.OnetoOneField(User)
+
 
 class GuestEmail(models.Model):
     email       = models.EmailField()
