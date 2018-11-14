@@ -8,7 +8,7 @@ User = settings.AUTH_USER_MODEL
 
 class BillingProfileManager(models.Manager):
     def new_or_get(self, request):
-        user = request.user
+        User = request.user
         guest_email_id = request.session.get('guest_email_id')
         created = False
         obj = None
@@ -26,7 +26,7 @@ class BillingProfileManager(models.Manager):
         return obj, created
 
 class BillingProfile(models.Model):
-    user        = models.OneToOneField(User, null=True, blank=True)
+    user        = models.OneToOneField(User, null=True, blank=True,on_delete=models.CASCADE)
     email       = models.EmailField()
     active      = models.BooleanField(default=True)
     update      = models.DateTimeField(auto_now=True)
