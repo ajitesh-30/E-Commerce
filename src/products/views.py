@@ -2,7 +2,9 @@
 from django.http import Http404
 from django.views.generic import ListView, DetailView
 from django.shortcuts import render, get_object_or_404
-from analytics.mixin  import ObjectViewedMixin
+
+from analytics.mixin import ObjectViewedMixin
+
 from carts.models import Cart
 
 from .models import Product
@@ -16,13 +18,23 @@ class ProductFeaturedListView(ListView):
         return Product.objects.all().featured()
 
 
-class ProductFeaturedDetailView(ObjectViewedMixin,DetailView):
+class ProductFeaturedDetailView(ObjectViewedMixin, DetailView):
     queryset = Product.objects.all().featured()
     template_name = "products/featured-detail.html"
+
+    # def get_queryset(self, *args, **kwargs):
+    #     request = self.request
+    #     return Product.objects.featured()
+
 
 
 class ProductListView(ListView):
     template_name = "products/list.html"
+
+    # def get_context_data(self, *args, **kwargs):
+    #     context = super(ProductListView, self).get_context_data(*args, **kwargs)
+    #     print(context)
+    #     return context
 
     def get_context_data(self, *args, **kwargs):
         context = super(ProductListView, self).get_context_data(*args, **kwargs)
@@ -44,7 +56,7 @@ def product_list_view(request):
 
 
 
-class ProductDetailSlugView(ObjectViewedMixin,DetailView):
+class ProductDetailSlugView(ObjectViewedMixin, DetailView):
     queryset = Product.objects.all()
     template_name = "products/detail.html"
 
@@ -57,6 +69,7 @@ class ProductDetailSlugView(ObjectViewedMixin,DetailView):
     def get_object(self, *args, **kwargs):
         request = self.request
         slug = self.kwargs.get('slug')
+
         #instance = get_object_or_404(Product, slug=slug, active=True)
         try:
             instance = Product.objects.get(slug=slug, active=True)
@@ -67,12 +80,11 @@ class ProductDetailSlugView(ObjectViewedMixin,DetailView):
             instance = qs.first()
         except:
             raise Http404("Uhhmmm ")
-        object_viewed_signal.send(instance.__class__,instance,request=request)
         return instance
 
 
 
-class ProductDetailView(ObjectViewedMixin,DetailView):
+class ProductDetailView(ObjectViewedMixin, DetailView):
     #queryset = Product.objects.all()
     template_name = "products/detail.html"
 
@@ -90,13 +102,18 @@ class ProductDetailView(ObjectViewedMixin,DetailView):
             raise Http404("Product doesn't exist")
         return instance
 
+    # def get_queryset(self, *args, **kwargs):
+    #     request = self.request
+    #     pk = self.kwargs.get('pk')
+    #     return Product.objects.filter(pk=pk)
+
 
 def product_detail_view(request, pk=None, *args, **kwargs):
-    
+
     instance = Product.objects.get_by_id(pk)
     if instance is None:
         raise Http404("Product doesn't exist")
-    
+
     context = {
         'object': instance
     }
